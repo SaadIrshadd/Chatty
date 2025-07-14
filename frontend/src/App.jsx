@@ -23,8 +23,10 @@ const App = () => {
    
   useEffect(() => {
     checkAuth();
-
-  }, [checkAuth]);
+    if (theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+  }, [checkAuth, theme]);
 
   console.log({ checkAuth })
   
@@ -35,7 +37,7 @@ const App = () => {
   )
 
   return (
-    <div  data-theme={theme}>  
+    <div>  
     <Navbar/>
 
     <Routes>
