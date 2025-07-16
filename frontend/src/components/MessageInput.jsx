@@ -8,6 +8,7 @@ import EmojiPicker from 'emoji-picker-react';
 
 const MessageInput = () => {
     const [text, setText] = useState("");
+    const [sending, setSending] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [emoji, setEmoji] = useState(null)
     const fileInput = useRef(null);
@@ -35,8 +36,11 @@ const MessageInput = () => {
     const handleSendMessage = async(e) => {
         e.preventDefault();
         if( !text.trim() &&  !imagePreview ) return;
+        if (sending) return;
 
         try {
+            setSending(true);
+
             await sendMessage({
                 text: text.trim(),
                 image: imagePreview,
@@ -51,6 +55,8 @@ const MessageInput = () => {
         } catch (error) {
             console.error("Failed to send a message", error);
 
+        }finally {
+            setSending(false);
         }
     }
 
