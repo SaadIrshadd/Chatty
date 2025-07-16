@@ -2,10 +2,14 @@ import React, { useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore';
 import { Image, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { RiEmojiStickerLine } from 'react-icons/ri';
+import EmojiPicker from 'emoji-picker-react';
+
 
 const MessageInput = () => {
     const [text, setText] = useState("");
     const [imagePreview, setImagePreview] = useState(null);
+    const [emoji, setEmoji] = useState(null)
     const fileInput = useRef(null);
     const { sendMessage } = useChatStore();
 
@@ -50,9 +54,14 @@ const MessageInput = () => {
         }
     }
 
+    const handleEmoji = () => {
+        setEmoji((prev) => !prev)
+    }
+
     
 return (
     <div className='p-4 w-full'>
+      
       {imagePreview && (
         <div className='mb-3 flex items-center gap-2'>
             <div className='relative'>
@@ -88,9 +97,35 @@ return (
                 ref={fileInput}
                 onChange={handleImageChange}
             />
+            <div className="relative">
+            
+            <button
+                className={`btn btn-circle`}
+                onClick={handleEmoji}
+                type="button"
+            >
+                <RiEmojiStickerLine size={20} />
+            </button>
+
+            {emoji && (
+                <div className="absolute bottom-full right-0 mb-2 z-50">
+                <EmojiPicker
+                    height={350} width={300}
+                    onEmojiClick={(emojiData) => {
+                    setText((prev) => prev + emojiData.emoji);
+                    setEmoji(false); 
+                    }}
+                    lazyLoadEmojis='false'
+                    skinTonesDisabled="true"
+                    searchDisabled="true"
+                    showPreview="false"                
+                />
+                </div>
+            )}
+            </div>
             <button
                 type="button"
-                className={`hidden sm:flex btn btn-circle ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
+                className={`btn btn-circle ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
                 onClick={()=> fileInput.current?.click()}
             >
                 <Image size={20} />
