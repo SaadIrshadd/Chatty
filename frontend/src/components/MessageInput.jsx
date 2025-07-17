@@ -4,6 +4,8 @@ import { Image, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { RiEmojiStickerLine } from 'react-icons/ri';
 import EmojiPicker from 'emoji-picker-react';
+import { Loader } from 'lucide-react'
+
 
 
 const MessageInput = () => {
@@ -124,7 +126,8 @@ return (
                     lazyLoadEmojis='false'
                     skinTonesDisabled="true"
                     searchDisabled="true"
-                    showPreview="false"                
+                    showPreview="false" 
+                    emojiStyle="google"               
                 />
                 </div>
             )}
@@ -138,13 +141,19 @@ return (
             </button>
         </div>
 
-        <button
+        <div className='flex'>
+            <button
             type="submit"
             className='btn btn-sm btn-circle'
             disabled={ !text.trim() && !imagePreview }
         >
-            <Send size={22} />
-        </button>
+            {sending ? (            
+                <Loader className="size-5 animate-spin" style={{ animationDuration: "1.5s" }} />                           
+            ) : (
+                <Send size={22} />
+            )}
+            </button>
+        </div>
       </form>
     </div>
   )
