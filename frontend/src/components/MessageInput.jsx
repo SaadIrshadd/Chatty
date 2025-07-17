@@ -96,7 +96,11 @@ return (
                 className='w-full input input-bordered rounded-lg input-sm sm:input-md'
                 placeholder='Type a message...'
                 value={text}
-                onChange={(e)=> setText(e.target.value)}    
+                onChange={(e)=> {
+                    const input = e.target.value;
+                    const capitalized = input.charAt(0).toUpperCase() + input.slice(1);
+                    setText(capitalized);
+                }}    
             />
             <input 
                 type="file"
